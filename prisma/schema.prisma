@@ -16,12 +16,19 @@ enum Status {
   REJECTED
 }
 
+enum Role {
+  USER
+  APPROVER
+  ADMIN
+}
+
 model User {
   id            Int               @id @default(autoincrement())
   username      String            @unique
   email         String            @unique
   passwordHash  String
   requests      PurchaseRequest[]
+  role Role     @default(USER)
   createdAt     DateTime          @default(now())
 }
 
