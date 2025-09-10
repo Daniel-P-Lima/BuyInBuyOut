@@ -19,7 +19,6 @@ enum Status {
 enum Role {
   USER
   APPROVER
-  ADMIN
 }
 
 model User {
