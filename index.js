@@ -151,5 +151,63 @@ app.patch('/requests/:id', authenticateToken, async (req, res) => {
   }
 })
 
+app.post('/requests/:id/submit', authenticateToken, async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+
+    const purchaseRequest = await prisma.purchaseRequest.findUnique({
+      where: { 
+        id, 
+        userId: req.userId 
+      },
+      select: { 
+        status: true
+      }
+    })
+
+    if (!purchaseRequest) return res.sendStatus(404)
+
+    const updated = await prisma.purchaseRequest.update({
+        where: { id },
+        data: { status: "SUBMITTED" },
+        select: { name: true, status: true}
+      })
+      return res.json(updated)
+  } catch (error) {
+    console.error('STATUS_UPDATE_ERROR:', error)
+    return res.status(500).json({ error: 'Erro interno' })
+  }
+})
+
+app.post('/requests/:id/approve', authenticateToken, async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id :req.userId
+    }
+  })
+  // if (user.role != "APPROVER" || user.role != "ADMIN") return res.sendStatus(403)
+
+  const purchaseRequest = await prisma.purchaseRequest.findUnique({
+    where: {
+      id: Number(req.params.id)
+    }
+  })
+
+  if (!purchaseRequest) return res.sendStatus(404)
+  
+  const purchaseRequestUpdated = await prisma.purchaseRequest.update({
+    where: {
+      id: Number(req.params.id)
+    },
+    data: {
+      status : 'APPROVED'
+    },
+    select: {
+      name: true, status: true
+    }
+  })
+
+  return res.sendStatus(200).json(purchaseRequestUpdated) 
+})
 
 app.listen(3000);
