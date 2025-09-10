@@ -197,13 +197,20 @@ app.post('/requests/:id/approve', authenticateToken, async (req, res) => {
   
   const purchaseRequestUpdated = await prisma.purchaseRequest.update({
     where: {
-      id: Number(req.params.id)
+      id: purchaseRequest.id
     },
     data: {
       status : 'APPROVED'
     },
     select: {
       name: true, status: true
+    }
+  })
+
+  const purchaseRequestLog = await prisma.logs.create({
+    data : {
+      purchaseRequestId :  purchaseRequest.id,
+      change : "Request change to approved"
     }
   })
 
@@ -236,6 +243,13 @@ app.post('/requests/:id/reject', authenticateToken, async (req, res) => {
     },
     select : {
       name : true, status : true
+    }
+  })
+
+  const purchaseRequestLog = await prisma.logs.create({
+    data : {
+      purchaseRequestId :  purchaseRequest.id,
+      change : "Request change to rejected"
     }
   })
 
