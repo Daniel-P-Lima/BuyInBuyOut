@@ -1,3 +1,4 @@
+// prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -14,18 +15,24 @@ enum Status {
   APPROVED
   REJECTED
 }
-model Users {
-  id           Int      @id @default(autoincrement())
-  username     String   @unique
-  email        String   @unique
-  passwordHash String
-  createdAt    DateTime @default(now())
+
+model User {
+  id            Int               @id @default(autoincrement())
+  username      String            @unique
+  email         String            @unique
+  passwordHash  String
+  requests      PurchaseRequest[]
+  createdAt     DateTime          @default(now())
 }
 
-model Requests {
-  id Int @id @default(autoincrement())
-  name String 
-  status Status @default(DRAFT)
+model PurchaseRequest {
+  id        Int      @id @default(autoincrement())
+  name      String
+  status    Status   @default(DRAFT)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id]) 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
