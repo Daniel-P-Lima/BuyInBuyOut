@@ -182,10 +182,10 @@ app.post('/requests/:id/submit', authenticateToken, async (req, res) => {
 app.post('/requests/:id/approve', authenticateToken, async (req, res) => {
   const user = await prisma.user.findUnique({
     where: {
-      id :req.userId
+      id : req.userId
     }
   })
-  // if (user.role != "APPROVER" || user.role != "ADMIN") return res.sendStatus(403)
+  if (user.role != 'APPROVER') return res.sendStatus(403)
 
   const purchaseRequest = await prisma.purchaseRequest.findUnique({
     where: {
@@ -209,5 +209,38 @@ app.post('/requests/:id/approve', authenticateToken, async (req, res) => {
 
   return res.sendStatus(200).json(purchaseRequestUpdated) 
 })
+
+app.post('/requests/:id/reject', authenticateToken, async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where : {
+      id : req.userId
+    }
+  })
+
+  if (user.role != 'APPROVER') return res.sendStatus(403)
+  
+  const purchaseRequest = await prisma.purchaseRequest.findUnique({
+    where: {
+      id : Number(req.params.id)
+    }
+  })
+
+  if (!purchaseRequest) return res.sendStatus(404)
+  
+  const purchaseRequestUpdated = await prisma.purchaseRequest.update({
+    where : {
+      id : purchaseRequest.id
+    },
+    data : {
+      status : 'REJECTED'
+    },
+    select : {
+      name : true, status : true
+    }
+  })
+
+  return res.sendStatus(200).json(purchaseRequestUpdated)
+})
+
 
 app.listen(3000);
