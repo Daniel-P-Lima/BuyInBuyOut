@@ -11,10 +11,10 @@
   },
   "name": "buyinbuyout",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",

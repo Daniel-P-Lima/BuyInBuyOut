@@ -22,13 +22,13 @@ enum Role {
 }
 
 model User {
-  id            Int               @id @default(autoincrement())
-  username      String            @unique
-  email         String            @unique
-  passwordHash  String
-  requests      PurchaseRequest[]
-  role Role     @default(USER)
-  createdAt     DateTime          @default(now())
+  id           Int               @id @default(autoincrement())
+  username     String            @unique
+  email        String            @unique
+  passwordHash String
+  requests     PurchaseRequest[]
+  role         Role              @default(USER)
+  createdAt    DateTime          @default(now())
 }
 
 model PurchaseRequest {
@@ -36,9 +36,18 @@ model PurchaseRequest {
   name      String
   status    Status   @default(DRAFT)
   userId    Int
-  user      User     @relation(fields: [userId], references: [id]) 
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Logs      Logs[]
 
   @@index([userId])
+}
+
+model Logs {
+  id                Int             @id @default(autoincrement())
+  purchaseRequestId Int
+  purchaseRequest   PurchaseRequest @relation(fields: [purchaseRequestId], references: [id])
+  change            String
+  createdAt         DateTime        @default(now())
 }
