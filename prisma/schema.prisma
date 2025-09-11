@@ -39,12 +39,12 @@ model PurchaseRequest {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Logs      Logs[]
+  ApprovalHistory      ApprovalHistory[]
 
   @@index([userId])
 }
 
-model Logs {
+model ApprovalHistory {
   id                Int             @id @default(autoincrement())
   purchaseRequestId Int
   purchaseRequest   PurchaseRequest @relation(fields: [purchaseRequestId], references: [id])
