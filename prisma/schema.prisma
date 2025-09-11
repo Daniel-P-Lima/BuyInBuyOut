@@ -32,14 +32,15 @@ model User {
 }
 
 model PurchaseRequest {
-  id        Int      @id @default(autoincrement())
-  name      String
-  status    Status   @default(DRAFT)
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ApprovalHistory      ApprovalHistory[]
+  id              Int               @id @default(autoincrement())
+  name            String
+  status          Status            @default(DRAFT)
+  userId          Int
+  user            User              @relation(fields: [userId], references: [id])
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  ApprovalHistory ApprovalHistory[]
+  item            RequestItems[]
 
   @@index([userId])
 }
@@ -50,4 +51,19 @@ model ApprovalHistory {
   purchaseRequest   PurchaseRequest @relation(fields: [purchaseRequestId], references: [id])
   change            String
   createdAt         DateTime        @default(now())
+}
+
+model Item {
+  id      Int            @id @default(autoincrement())
+  name    String
+  cost    Float
+  request RequestItems[]
+}
+
+model RequestItems {
+  id                Int             @id @default(autoincrement())
+  purchaseRequest   PurchaseRequest @relation(fields: [purchaseRequestId], references: [id])
+  purchaseRequestId Int
+  item              Item            @relation(fields: [itemId], references: [id])
+  itemId            Int
 }
