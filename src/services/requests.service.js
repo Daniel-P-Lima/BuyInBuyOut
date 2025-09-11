@@ -75,7 +75,7 @@ async function approve({ purchaseRequestId, userId }) {
         select : { id : true, name : true, status : true, createdAt : true, updatedAt : true }
     })
 
-    await prisma.logs.create({
+    await prisma.ApprovalHistory.create({
         data: {
             purchaseRequestId : updated.id,
             change : "Purchase request changed to approved"
@@ -103,7 +103,7 @@ async function reject({ purchaseRequestId, userId }) {
         select : { id : true, name : true, status : true, createdAt : true, updatedAt : true }
     })
 
-    await prisma.logs.create({
+    await prisma.ApprovalHistory.create({
         data: {
             purchaseRequestId : updated.id,
             change : "Purchase request changed to rejected"
