@@ -127,4 +127,17 @@ async function summary() {
     return Object.fromEntries(rows.map(r => [r.status, r._count._all]))
 }
 
-module.exports = { listMine, getMine, create, updateMine, submit, approve, reject, summary }
+async function createItem(itemName, itemCost) {
+    return itemCreated = await prisma.item.create({
+        data : {
+            name : itemName,
+            cost : itemCost
+        },
+        select : {
+            name : true,
+            cost : true
+        }
+    })
+}
+
+module.exports = { listMine, getMine, create, updateMine, submit, approve, reject, summary, createItem }
