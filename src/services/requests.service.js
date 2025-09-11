@@ -15,11 +15,17 @@ async function getMine({ purchaseRequestId, userId }) {
     })
 }
 
-async function create({ name, userId }) {
-    return prisma.purchaseRequest.create({
+async function create({ name, userId, item }) {
+    const purchaseRequestCreated = await prisma.purchaseRequest.create({
         data : { name, user : { connect : { id : userId } } },
-        select : {name : true, status : true, createdAt : true}
+        select : {id : true, name : true, status : true, createdAt : true}
     })
+
+    const requestItemCreated = await prisma.requestItems.create({
+        data : {purchaseRequestId : purchaseRequestCreated.id, itemId : item}
+    })
+
+    return {purchaseRequestCreated, requestItemCreated};
 }
 
 async function updateMine({ purchaseRequestId, userId, name, status }) {

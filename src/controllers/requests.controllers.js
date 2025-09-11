@@ -26,9 +26,9 @@ async function getMine(req, res) {
 
 async function create(req, res) {
     try {
-        const { name } = req.body;
+        const { name, item } = req.body;
         if (!name) return res.status(400).json({ error : "name é obrigatório" });
-        const output = await service.create({ name, userId : req.userId });
+        const output = await service.create({ name, userId : req.userId, item});
         return res.status(201).json(output);
     } catch (error) {
         console.error("CREATE_REQUEST_ERROR:", error);
