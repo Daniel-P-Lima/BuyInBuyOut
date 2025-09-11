@@ -10,5 +10,6 @@ router.post("/:id/submit", authenticateToken, ctrl.submit); // Submit request
 router.post("/:id/approve", authenticateToken, ctrl.approve); // Approve request
 router.post("/:id/reject", authenticateToken, ctrl.reject); // Reject request
 router.get("/reports/summary", authenticateToken, ctrl.summary); // Sumary requests
+router.post("/createItem", authenticateToken, ctrl.createItem) // Create item 
 
 module.exports = router;

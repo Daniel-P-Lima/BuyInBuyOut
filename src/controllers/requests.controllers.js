@@ -95,6 +95,17 @@ async function summary(_, res) {
     }
 }
 
+async function createItem(req, res) {
+    try {
+        const {itemName, itemCost} = req.body
+        const output = await service.createItem(itemName, itemCost)
+        return res.json(output)
+    } catch (error) {
+        console.error("UPDATE_REQUEST_ERROR:", error);
+        return res.status(500).json({ error: "Internal server error." });
+    }
+}
+
 module.exports = {
   listMine,
   getMine,
@@ -104,4 +115,5 @@ module.exports = {
   approve,
   reject,
   summary,
+  createItem
 };
