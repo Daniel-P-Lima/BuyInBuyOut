@@ -3,7 +3,6 @@
 BuyInBuyOut is a **Node.js + Express API** for managing purchase requests, approvals, and items.  
 It uses **Prisma** as the ORM, **MySQL** as the database, and integrates **JWT-based authentication** with role-based approval flows.
 
-AI was used to make this README, review the code and make suggestions to improve the code
 ---
 
 ## Features
@@ -153,3 +152,9 @@ src/
 ## License
 
 This project is licensed under the **ISC License**.
+
+## AI Use
+
+- AI was used to make this README, review the code and make suggestions to improve the code. 
+- For the JWT authentication, there were some errors, and I used AI to resolve the doubts I had.
+- The relationship N:N of items and requests was a little bit tricky to settle, so AI was used in some code.
